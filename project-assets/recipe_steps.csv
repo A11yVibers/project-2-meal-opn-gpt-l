@@ -1,0 +1,11 @@
+recipe_id,step_number,instruction,timer_minutes
+R001,1,Cook the rice according to package directions.,0
+R001,2,"Whisk honey, soy sauce, garlic, and lemon juice together.",3
+R001,3,"Cook the salmon until nearly done, then add the glaze and reduce until glossy.",10
+R001,4,Steam or sauté the broccoli until crisp-tender.,6
+R001,5,"Assemble rice, salmon, and broccoli in bowls and garnish with green onion.",2
+R002,1,"Cook the pasta until al dente, reserving some pasta water.",10
+R002,2,"Sauté garlic briefly, then add chickpeas and warm through.",4
+R002,3,"Add cream, Parmesan, and a splash of pasta water; stir until smooth.",4
+R002,4,"Fold in spinach until wilted, then toss with the cooked pasta.",3
+R002,5,Season to taste and serve.,1

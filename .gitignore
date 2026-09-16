@@ -1,0 +1,23 @@
+# Local experiment infrastructure
+/.codex/
+/.claude/
+/.agents/
+/.opencode/
+/.control-center-experiment.json
+/.trajectory/
+
+# Dependencies and generated output
+/node_modules/
+/.vinext/
+/.wrangler/
+/.openai/
+/dist/
+/build/
+/out/
+/coverage/
+
+# Local caches and secrets
+__pycache__/
+.DS_Store
+.env*
+*.log

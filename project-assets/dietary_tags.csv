@@ -1,0 +1,10 @@
+dietary_tag_id,dietary_tag_name
+DT01,Vegetarian
+DT02,Vegan
+DT03,Gluten-free
+DT04,Dairy-free
+DT05,Nut-free
+DT06,High-protein
+DT07,Low-carb
+DT08,Pescatarian
+DT09,Halal-friendly

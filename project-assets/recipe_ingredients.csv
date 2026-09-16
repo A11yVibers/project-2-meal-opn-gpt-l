@@ -1,0 +1,16 @@
+recipe_id,display_order,section_name,ingredient_id,ingredient_name,quantity,unit,notes,optional
+R001,1,Main,ING003,Salmon,1.5,lb,,False
+R001,2,Main,ING025,Rice,1.5,cup,uncooked,False
+R001,3,Sauce,ING033,Honey,3,tbsp,,False
+R001,4,Sauce,ING031,Soy sauce,3,tbsp,,False
+R001,5,Sauce,ING013,Garlic,4,clove,minced,False
+R001,6,Sauce,ING022,Lemon,1,piece,juiced,False
+R001,7,Vegetables,ING015,Broccoli,2,cup,florets,False
+R001,8,Vegetables,ING020,Green onion,2,piece,sliced,True
+R002,1,Main,ING026,Pasta,12,oz,,False
+R002,2,Main,ING036,Chickpeas,1,can,drained and rinsed,False
+R002,3,Sauce,ING013,Garlic,3,clove,minced,False
+R002,4,Sauce,ING010,Heavy cream,0.5,cup,,False
+R002,5,Sauce,ING009,Parmesan cheese,0.5,cup,grated,False
+R002,6,Vegetables,ING016,Spinach,4,cup,fresh,False
+R002,7,Seasoning,ING043,Black pepper,0.5,tsp,,True

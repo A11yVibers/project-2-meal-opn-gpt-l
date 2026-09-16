@@ -1,0 +1,7 @@
+meal_type_id,meal_type_name
+MT01,Breakfast
+MT02,Lunch
+MT03,Dinner
+MT04,Snack
+MT05,Dessert
+MT06,Side dish

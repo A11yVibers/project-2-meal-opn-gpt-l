@@ -1,0 +1,45 @@
+ingredient_id,ingredient_name,shopping_category
+ING001,Chicken thigh,Meat & seafood
+ING002,Chicken breast,Meat & seafood
+ING003,Salmon,Meat & seafood
+ING004,Shrimp,Meat & seafood
+ING005,Ground beef,Meat & seafood
+ING006,Egg,Dairy & eggs
+ING007,Greek yogurt,Dairy & eggs
+ING008,Butter,Dairy & eggs
+ING009,Parmesan cheese,Dairy & eggs
+ING010,Heavy cream,Dairy & eggs
+ING011,Bell pepper,Produce
+ING012,Onion,Produce
+ING013,Garlic,Produce
+ING014,Carrot,Produce
+ING015,Broccoli,Produce
+ING016,Spinach,Produce
+ING017,Zucchini,Produce
+ING018,Asparagus,Produce
+ING019,Mushroom,Produce
+ING020,Green onion,Produce
+ING021,Tomato,Produce
+ING022,Lemon,Produce
+ING023,Ginger,Produce
+ING024,Potato,Produce
+ING025,Rice,Grains & pantry
+ING026,Pasta,Grains & pantry
+ING027,Noodles,Grains & pantry
+ING028,Bread,Grains & pantry
+ING029,Flour,Grains & pantry
+ING030,Olive oil,Oils & condiments
+ING031,Soy sauce,Oils & condiments
+ING032,Sesame oil,Oils & condiments
+ING033,Honey,Oils & condiments
+ING034,Miso paste,Oils & condiments
+ING035,Coconut milk,Canned & jarred
+ING036,Chickpeas,Canned & jarred
+ING037,Black beans,Canned & jarred
+ING038,Canned tomatoes,Canned & jarred
+ING039,Cumin,Spices
+ING040,Paprika,Spices
+ING041,Turmeric,Spices
+ING042,Chili flakes,Spices
+ING043,Black pepper,Spices
+ING044,Salt,Spices

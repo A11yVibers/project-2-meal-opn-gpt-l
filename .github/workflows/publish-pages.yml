@@ -1,0 +1,121 @@
+name: publish-pages
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - gh-pages
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        if: ${{ hashFiles('package.json') != '' }}
+        with:
+          node-version: 22
+      - name: Build and select output
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f package.json ]]; then
+            corepack enable || true
+            if [[ -f pnpm-lock.yaml ]]; then
+              pnpm install --frozen-lockfile
+              pnpm run --if-present build
+            elif [[ -f yarn.lock ]]; then
+              yarn install --immutable || yarn install --frozen-lockfile
+              if node -e "const p=require('./package.json'); process.exit(p.scripts && p.scripts.build ? 0 : 1)"; then
+                yarn run build
+              fi
+            elif [[ -f package-lock.json ]]; then
+              npm ci
+              # npm lockfiles generated on another OS can omit Rollup's
+              # platform-specific optional package (npm/cli#4828).
+              if ! node -e "require('rollup')" >/dev/null 2>&1; then
+                echo "Rollup native package is missing; reinstalling dependencies"
+                rm -rf node_modules package-lock.json
+                npm install
+              fi
+              npm run build --if-present
+            else
+              npm install
+              npm run build --if-present
+            fi
+          fi
+          selected=""
+          for candidate in dist build out public .; do
+            if [[ -f "$candidate/index.html" ]]; then selected="$candidate"; break; fi
+          done
+          if [[ -z "$selected" && -f package.json ]] && \
+             node -e "const p=require('./package.json'); process.exit(p.scripts && p.scripts.start ? 0 : 1)"; then
+            PORT=4173 npm run start >/tmp/control-center-server.log 2>&1 &
+            server_pid=$!
+            trap 'kill "$server_pid" >/dev/null 2>&1 || true' EXIT
+            for attempt in {1..60}; do
+              if curl --fail --silent http://127.0.0.1:4173/ >/dev/null; then break; fi
+              if ! kill -0 "$server_pid" >/dev/null 2>&1; then
+                cat /tmp/control-center-server.log >&2
+                exit 1
+              fi
+              sleep 1
+            done
+            wget --quiet --mirror --page-requisites --convert-links --adjust-extension \
+              --no-parent --directory-prefix=/tmp/control-center-snapshot \
+              http://127.0.0.1:4173/
+            selected="$(find /tmp/control-center-snapshot -name index.html -print -quit | xargs dirname)"
+            kill "$server_pid" >/dev/null 2>&1 || true
+            trap - EXIT
+          fi
+          if [[ -z "$selected" ]]; then
+            echo "No publishable directory containing index.html" >&2
+            exit 1
+          fi
+          mkdir -p /tmp/control-center-publish
+          rsync -a --delete \
+            --exclude '.git/' --exclude '.github/' --exclude '.codex/' \
+            --exclude '.claude/' --exclude '.control-center-experiment.json' \
+            --exclude '.trajectory/' --exclude 'node_modules/' \
+            "$selected/" /tmp/control-center-publish/
+      - name: Update version on gh-pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" /tmp/pages
+          cd /tmp/pages
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git checkout -B gh-pages origin/gh-pages
+          else
+            git checkout --orphan gh-pages
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          rm -rf "$VERSION"
+          mkdir -p "$VERSION"
+          cp -R /tmp/control-center-publish/. "$VERSION/"
+          touch .nojekyll
+          python3 - <<'PY'
+          import html
+          from pathlib import Path
+          versions = sorted(p.name for p in Path('.').iterdir() if p.is_dir() and not p.name.startswith('.'))
+          links = '\n'.join(f'<li><a href="{html.escape(v)}/">{html.escape(v)}</a></li>' for v in versions)
+          Path('index.html').write_text(f'<!doctype html><html lang="en"><meta charset="utf-8"><title>Versions</title><h1>Versions</h1><ul>{links}</ul>\n')
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Publish ${VERSION}" || exit 0
+          git push origin gh-pages

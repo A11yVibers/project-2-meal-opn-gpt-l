@@ -1,0 +1,16 @@
+unit_id,unit_name
+U01,g
+U02,kg
+U03,oz
+U04,lb
+U05,ml
+U06,L
+U07,tsp
+U08,tbsp
+U09,cup
+U10,piece
+U11,clove
+U12,can
+U13,package
+U14,pinch
+U15,to taste
