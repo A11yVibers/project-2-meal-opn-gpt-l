@@ -18,6 +18,7 @@
 
 # Local caches and secrets
 __pycache__/
+.playwright-mcp/
 .DS_Store
 .env*
 *.log
